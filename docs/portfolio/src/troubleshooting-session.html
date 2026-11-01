@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+  <meta charset="UTF-8">
+  <title>로그인 문제 해결 트러블슈팅</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['"Noto Sans KR"', 'sans-serif'],
+            mono: ['"JetBrains Mono"', 'monospace'],
+          },
+          colors: {
+            brand: '#009C64',
+            bg: '#F0EEE9',
+            surface: '#FFFFFF',
+            tomato: '#FF6347',
+            cancel: '#E5E7EB',
+            textMain: '#1F2937',
+            textSec: '#6B7280',
+          },
+          borderRadius: {
+            small: '4px',
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    body {
+      background-color: #e5e5e5;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      margin: 0;
+      padding: 20px;
+    }
+
+    .slide {
+      width: 1280px;
+      height: 720px;
+      background-color: #F0EEE9;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .step-card {
+      background: white;
+      border-radius: 8px;
+      padding: 20px 8px; /* 내부 가로 여백 축소하여 텍스트 공간 확보 */
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+      flex: 1; /* w-full 내부에서 5개 카드가 모두 정확히 같은 너비를 가짐 */
+      z-index: 10;
+      position: relative;
+      border: 1px solid #E5E7EB;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      word-break: keep-all;
+      height: 100%; /* items-stretch 부모 안에서 높이를 100% 채움 */
+    }
+
+    .status-badge {
+      font-size: 12px;
+      padding: 4px 10px;
+      border-radius: 4px;
+      font-weight: bold;
+      margin-bottom: 8px;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="slide p-6 rounded-lg">
+    <!-- Header -->
+    <header class="mb-5">
+      <div class="flex items-center gap-3 mb-2">
+        <div class="w-2 h-10 bg-brand rounded-small"></div>
+        <h1 class="text-4xl font-bold text-textMain tracking-tight">로그인 문제 해결 트러블슈팅</h1>
+      </div>
+      <p class="text-xl text-textSec pl-5">Electron 환경에서 세션 불일치로 발생하는 로그인/무한로딩 문제를 빠르게 진단하는 방법</p>
+    </header>
+
+    <!-- Main Content -->
+    <div class="flex gap-6 flex-1 mb-4">
+
+      <!-- Left: Diagram -->
+      <div class="flex-[1.6] flex flex-col justify-center">
+        <!-- items-stretch를 적용하여 가장 높은 3번 카드 기준으로 모든 카드 세로 길이가 똑같이 늘어남 -->
+        <div class="flex items-stretch justify-between w-full gap-2 relative px-2 mb-10">
+
+          <!-- Step 1 -->
+          <div class="step-card border-l-4 border-l-brand">
+            <div class="w-12 h-12 rounded-full bg-brand/10 text-brand flex items-center justify-center mb-4 mt-2">
+              <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1"></path>
+              </svg>
+            </div>
+            <!-- whitespace-nowrap 적용으로 무조건 한 줄 표시 -->
+            <h3 class="font-bold text-[15px] mb-2 text-textMain whitespace-nowrap">1. 로그인 성공</h3>
+            <p class="text-[13px] text-textSec">정상적인 인증<br>세션 토큰 발급</p>
+          </div>
+
+          <!-- Arrow (정중앙 수직/수평 정렬) -->
+          <div class="flex-shrink-0 text-gray-400 self-center">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path>
+            </svg>
+          </div>
+
+          <!-- Step 2 -->
+          <div class="step-card border-l-4 border-l-yellow-400">
+            <div class="w-12 h-12 rounded-full bg-yellow-100 text-yellow-600 flex items-center justify-center mb-4 mt-2">
+              <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+              </svg>
+            </div>
+            <h3 class="font-bold text-[15px] mb-2 text-textMain whitespace-nowrap">2. 일정 시간 대기</h3>
+            <p class="text-[13px] text-textSec">또는 로그아웃 후<br>재로그인 시도</p>
+          </div>
+
+          <!-- Arrow -->
+          <div class="flex-shrink-0 text-gray-400 self-center">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path>
+            </svg>
+          </div>
+
+          <!-- Step 3 -->
+          <div class="step-card border-l-4 border-l-blue-400">
+            <div class="w-12 h-12 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center mb-4 mt-2">
+              <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.956 11.956 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path>
+              </svg>
+            </div>
+            <h3 class="font-bold text-[15px] mb-2 text-textMain whitespace-nowrap">3. 보호 API 요청</h3>
+            <p class="text-[13px] text-textSec">세션이 동기화<br>되지 않은 상태에서<br>데이터 요청</p>
+          </div>
+
+          <!-- Arrow -->
+          <div class="flex-shrink-0 text-gray-400 self-center">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path>
+            </svg>
+          </div>
+
+          <!-- Step 4 -->
+          <div class="step-card border-l-4 border-l-tomato bg-red-50/50">
+            <div class="w-12 h-12 rounded-full bg-red-100 text-tomato flex items-center justify-center mb-4 mt-2">
+              <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path>
+              </svg>
+            </div>
+            <h3 class="font-bold text-[15px] mb-2 text-tomato whitespace-nowrap">4. 무한 로딩</h3>
+            <p class="text-[13px] text-textSec">세션 누락으로 <span class="text-tomato font-bold">401</span><br>처리 실패로 무한 대기</p>
+          </div>
+
+          <!-- Arrow -->
+          <div class="flex-shrink-0 text-gray-400 self-center">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path>
+            </svg>
+          </div>
+
+          <!-- Step 5 -->
+          <div class="step-card border-l-4 border-l-brand bg-green-50/50">
+            <div class="w-12 h-12 rounded-full bg-green-100 text-brand flex items-center justify-center mb-4 mt-2">
+              <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+              </svg>
+            </div>
+            <h3 class="font-bold text-[15px] mb-2 text-brand whitespace-nowrap">5. 해결 방안</h3>
+            <p class="text-[13px] text-textSec">세션 재검증<br>401 공통 처리<br>보호 요청 사전 차단</p>
+          </div>
+
+        </div>
+
+        
+
+      </div>
+
+      <!-- Right: Diagnostics & Callouts -->
+      <div class="w-80 flex flex-col gap-5">
+
+        <!-- Diagnostic Logs Panel -->
+        <div class="bg-textMain text-gray-300 p-5 rounded-xl shadow-md font-mono text-sm leading-relaxed">
+          <div class="flex items-center gap-2 mb-3 border-b border-gray-600 pb-2">
+            <svg class="w-4 h-4 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 9l3 3-3 3m5 0h3M5 20h14a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+            </svg>
+            <span class="text-white font-bold tracking-wider text-[11px]">DIAGNOSTIC LOGS</span>
+          </div>
+          <div class="mb-2">
+            <span class="text-yellow-400">GET</span> <span class="text-blue-300">/rest/v1/user</span>
+            <span class="float-right text-tomato font-bold">401</span>
+          </div>
+          <div class="mb-2 pl-3 border-l-2 border-gray-600 text-gray-400">
+            auth_user = <span class="text-tomato">null</span>
+          </div>
+          <div class="mt-4 pt-3 border-t border-gray-700">
+            <span class="text-yellow-400">GET</span> <span class="text-gray-400">/survey_responses</span>
+            <span class="float-right text-gray-500 font-bold">404</span>
+          </div>
+          <p class="text-[11px] text-gray-500 mt-2 italic flex items-start gap-1">
+            <svg class="w-3 h-3 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+            </svg>
+            * 404: 미배포 테이블 · 인증과 별개 원인
+          </p>
+        </div>
+
+        <!-- Key Callouts -->
+        <div class="bg-surface p-5 rounded-xl shadow-sm border border-gray-200">
+          <h4 class="font-bold text-lg mb-2 flex items-center gap-2 text-textMain">
+            <svg class="w-5 h-5 text-tomato" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path>
+            </svg>
+            문제 핵심
+          </h4>
+          <p class="text-[14px] text-textSec leading-relaxed">
+            <strong class="text-textMain">Supabase 장애가 아니라 세션 불일치</strong>입니다. Electron 앱 내부 세션 상태와 서버 인증 상태가 맞지 않아
+            발생합니다.
+          </p>
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- Bottom: Summary Band -->
+    <div class="bg-surface rounded-xl p-6 shadow-sm border border-gray-200 flex gap-6 mt-auto">
+      <div class="flex-1">
+        <div class="status-badge bg-yellow-100 text-yellow-800 w-fit">원인</div>
+        <p class="text-textMain font-medium pt-1">Electron 세션과 Supabase 인증 상태 불일치</p>
+      </div>
+      <div class="w-px bg-gray-200"></div>
+      <div class="flex-1">
+        <div class="status-badge bg-red-100 text-tomato w-fit">증상</div>
+        <p class="text-textMain font-medium pt-1">무한 로딩, 연결 확인 중, 로그인 직후 빈 화면</p>
+      </div>
+      <div class="w-px bg-gray-200"></div>
+      <div class="flex-1">
+        <div class="status-badge bg-green-100 text-brand w-fit">해결</div>
+        <p class="text-textMain font-medium pt-1">세션 재검증, 401 공통 처리, 사전 차단, 8초 timeout</p>
+      </div>
+    </div>
+
+  </div>
+</body>
+</html>

@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+  <meta charset="UTF-8">
+  <title>유사 취업 성공사례 검색 프로세스</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['"Noto Sans KR"', 'sans-serif'],
+            mono: ['"JetBrains Mono"', 'monospace'],
+          },
+          colors: {
+            brand: '#009C64',
+            bg: '#F0EEE9',
+            surface: '#FFFFFF',
+            tomato: '#FF6347',
+            cancel: '#E5E7EB',
+            textMain: '#1F2937',
+            textSec: '#6B7280',
+          },
+          borderRadius: {
+            small: '4px',
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    body {
+      background-color: #e5e5e5;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      margin: 0;
+      padding: 20px;
+    }
+
+    .slide {
+      width: 1280px;
+      height: 720px;
+      background-color: #F0EEE9;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .step-card {
+      background: white;
+      border-radius: 8px;
+      padding: 25px 10px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+      flex: 1;
+      z-index: 10;
+      position: relative;
+      border: 1px solid #E5E7EB;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      word-break: keep-all;
+      height: 100%;
+      transition: transform 0.2s;
+    }
+
+    .step-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 15px rgba(0, 156, 100, 0.1);
+      border-color: #009C64;
+    }
+
+    .status-badge {
+      font-size: 12px;
+      padding: 4px 10px;
+      border-radius: 4px;
+      font-weight: bold;
+      margin-bottom: 8px;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="slide p-6 rounded-lg">
+    <!-- Header -->
+    <header class="mb-5">
+      <div class="flex items-center gap-3 mb-2">
+        <div class="w-2 h-10 bg-brand rounded-small"></div>
+        <h1 class="text-4xl font-bold text-textMain tracking-tight">유사 취업 성공사례 검색 프로세스</h1>
+      </div>
+      <p class="text-xl text-textSec pl-5">검색용 snapshot 분리와 pgvector 기반 유사도 검색 흐름</p>
+    </header>
+
+    <!-- Main Content -->
+    <div class="w-full flex flex-col flex-1">
+      
+      <!-- Top Row: Cards and Key Points Box (Aligned Top) -->
+      <div class="flex gap-8 w-full mt-10">
+        <!-- Left: Diagram (4 Cards) -->
+        <div class="flex-[1.6] flex items-stretch justify-between gap-4 px-2 h-[280px]">
+
+          <!-- Step 1 -->
+          <div class="step-card border-t-4 border-t-brand">
+            <div class="w-14 h-14 rounded-full bg-brand/10 text-brand flex items-center justify-center mb-5 mt-2">
+              <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
+              </svg>
+            </div>
+            <h3 class="font-bold text-[16px] mb-3 text-textMain whitespace-nowrap">1. 내담자 데이터</h3>
+            <p class="text-[14px] text-textSec leading-relaxed">public.client<br>나이·학력·전공<br>희망직무</p>
+          </div>
+
+          <!-- Arrow -->
+          <div class="flex-shrink-0 text-brand opacity-60 self-center">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M14 5l7 7m0 0l-7 7m7-7H3"></path>
+            </svg>
+          </div>
+
+          <!-- Step 2 -->
+          <div class="step-card border-t-4 border-t-yellow-400">
+            <div class="w-14 h-14 rounded-full bg-yellow-50 text-yellow-600 flex items-center justify-center mb-5 mt-2">
+              <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4m0 5c0 2.21-3.582 4-8 4s-8-1.79-8-4"></path>
+              </svg>
+            </div>
+            <h3 class="font-bold text-[16px] mb-3 text-textMain whitespace-nowrap">2. snapshot 생성</h3>
+            <p class="text-[14px] text-textSec leading-relaxed">취업완료 사례만<br>마스킹 후 임베딩</p>
+          </div>
+
+          <!-- Arrow -->
+          <div class="flex-shrink-0 text-brand opacity-60 self-center">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M14 5l7 7m0 0l-7 7m7-7H3"></path>
+            </svg>
+          </div>
+
+          <!-- Step 3 -->
+          <div class="step-card border-t-4 border-t-brand">
+            <div class="w-14 h-14 rounded-full bg-brand/10 text-brand flex items-center justify-center mb-5 mt-2">
+              <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+              </svg>
+            </div>
+            <h3 class="font-bold text-[16px] mb-3 text-brand whitespace-nowrap">3. pgvector</h3>
+            <p class="text-[14px] text-textSec leading-relaxed">코사인 유사도 후보<br>연령대·학력·전공<br>rerank</p>
+          </div>
+
+          <!-- Arrow -->
+          <div class="flex-shrink-0 text-brand opacity-60 self-center">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M14 5l7 7m0 0l-7 7m7-7H3"></path>
+            </svg>
+          </div>
+
+          <!-- Step 4 -->
+          <div class="step-card border-t-4 border-t-indigo-400">
+            <div class="w-14 h-14 rounded-full bg-indigo-50 text-indigo-600 flex items-center justify-center mb-5 mt-2">
+              <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+              </svg>
+            </div>
+            <h3 class="font-bold text-[16px] mb-3 text-textMain whitespace-nowrap">4. 결과 반환</h3>
+            <p class="text-[14px] text-textSec leading-relaxed">같은 연령대 우선<br>상위 3건 반환<br>적합도·일치 사유</p>
+          </div>
+
+        </div>
+
+        <!-- Right: Diagnostics & Callouts -->
+        <div class="w-[340px] h-[280px]">
+          <!-- Key Callouts Box -->
+          <div class="bg-surface p-6 rounded-xl shadow-md border-t-4 border-t-brand h-full flex flex-col justify-center">
+            <h4 class="font-bold text-xl mb-6 flex items-center gap-2 text-textMain">
+              <svg class="w-6 h-6 text-brand" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+              </svg>
+              핵심 포인트
+            </h4>
+            <ul class="text-[14px] text-textMain space-y-4 font-medium leading-relaxed word-keep" style="word-break: keep-all;">
+              <li class="flex items-start gap-3">
+                <span class="text-brand mt-0.5 font-bold">✔</span> 
+                <span>원본 데이터와 검색용 snapshot 분리</span>
+              </li>
+              <li class="flex items-start gap-3">
+                <span class="text-brand mt-0.5 font-bold">✔</span> 
+                <span>pgvector 기반 유사도 검색 구조 적용</span>
+              </li>
+              <li class="flex items-start gap-3">
+                <span class="text-brand mt-0.5 font-bold">✔</span> 
+                <span>실명 마스킹 및 연령대 변환으로 노출 정보 제한</span>
+              </li>
+              <li class="flex items-start gap-3">
+                <span class="text-brand mt-0.5 font-bold">✔</span> 
+                <span>벡터 유사도 + 프로필 일치도 rerank로 결과 보정</span>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      
+
+    </div>
+
+    <!-- Bottom: Summary Band -->
+    <div class="bg-surface rounded-xl p-6 shadow-sm border border-gray-200 flex gap-6 mt-auto">
+      <div class="flex-1">
+        <div class="status-badge bg-blue-100 text-blue-800 w-fit">목적</div>
+        <p class="text-textMain font-medium pt-1">상담자에게 개인화된 내담자 맞춤형 취업 사례 추천</p>
+      </div>
+      <div class="w-px bg-gray-200"></div>
+      <div class="flex-1">
+        <div class="status-badge bg-brand text-white w-fit">구조</div>
+        <p class="text-textMain font-medium pt-1">pgvector 벡터 검색 + 규칙 기반 rerank</p>
+      </div>
+      <div class="w-px bg-gray-200"></div>
+      <div class="flex-1">
+        <div class="status-badge bg-yellow-100 text-yellow-800 w-fit">기대 효과</div>
+        <p class="text-textMain font-medium pt-1">취업 성공 사례 탐색 시간 단축 및 상담 질적 향상</p>
+      </div>
+    </div>
+
+  </div>
+</body>
+
+</html>
