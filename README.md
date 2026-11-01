@@ -5,6 +5,8 @@
 
 `React 19` `TypeScript` `Vite` `Electron` `Supabase (PostgreSQL · RLS · Edge Functions · pgvector)` `OpenAI Embedding`
 
+![ZeniManager 개인 기여: 상담사 대시보드, pgvector 유사 취업사례 검색, Electron 세션 안정화와 유사 사례 검색 흐름](./docs/portfolio/contribution-infographic.png)
+
 ---
 
 ## 1. 왜 만들었나
